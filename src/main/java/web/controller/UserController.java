@@ -1,7 +1,6 @@
 package web.controller;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,10 +13,8 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/users")
 public class UserController {
-
     private final UserService userService;
 
-    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
@@ -33,7 +30,6 @@ public class UserController {
         model.addAttribute("user", userService.show(id));
         return "users/show";
     }
-
 
     @GetMapping("/new")
     public String newUser(@ModelAttribute("user") User user) {
@@ -57,12 +53,11 @@ public class UserController {
     }
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("user") @Valid User user, BindingResult bindingResult,
-                         @PathVariable("id") int id) {
+    public String update(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return "users/edit";
 
-        userService.update(id, user);
+        userService.update(user);
         return "redirect:/users";
     }
 
